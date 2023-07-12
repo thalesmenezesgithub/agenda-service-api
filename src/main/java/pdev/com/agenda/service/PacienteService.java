@@ -18,9 +18,7 @@ public class PacienteService {
 
     public Paciente salvar(Paciente paciente)
     {
-        
-
-        return repository.save(paciente)
+        return repository.save(paciente);
     }
 
     public List<Paciente> listarTodos()
@@ -30,7 +28,7 @@ public class PacienteService {
 
     public Optional<Paciente> buscarPorId(Long id)
     {
-        return repository.findById(id).get();
+        return repository.findById(id);
     }
 
     public void deletar(Long id)
