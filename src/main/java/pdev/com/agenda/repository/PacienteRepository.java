@@ -7,8 +7,7 @@ import pdev.com.agenda.model.Paciente;
 import java.util.Optional;
 
 @Repository
-public interface PacienteRepository extends JpaRepository<Paciente, Long> {
-    Optional<Paciente> findByCpf(){
-
-    }
+public interface PacienteRepository extends JpaRepository<Paciente, Long>
+{
+    Optional<Paciente> findByCpf(String cpf);
 }
