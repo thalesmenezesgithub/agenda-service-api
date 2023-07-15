@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pdev.com.agenda.mapper.PacienteMapper;
 import pdev.com.agenda.model.Paciente;
+import pdev.com.agenda.request.PacienteRequest;
+import pdev.com.agenda.response.PacienteResponse;
 import pdev.com.agenda.service.PacienteService;
 
 import java.util.List;
@@ -19,11 +22,16 @@ public class PacienteController
     private PacienteService service;
 
     @PostMapping
-    public ResponseEntity<Paciente> salvar(@RequestBody Paciente paciente)
+    public ResponseEntity<PacienteResponse> salvar(@RequestBody PacienteRequest request)
     {
-        Paciente salva = service.salvar(paciente);
+        //Faz o mapeamento com a classe
+        Paciente paciente = PacienteMapper.toPaciente(request);
 
-        return  ResponseEntity.status(HttpStatus.CREATED).body(salva);
+        Paciente salvaPaciente = service.salvar(paciente);
+
+        PacienteResponse response = PacienteMapper.toPacienteResponse(salvaPaciente);
+
+        return  ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
@@ -47,13 +55,21 @@ public class PacienteController
         return  ResponseEntity.status(HttpStatus.OK).body(optionalPaciente.get());
     }
 
-    @PutMapping
-    public ResponseEntity<Paciente> alterar(@ResponseBody Paciente paciente)
-    {
-        Paciente editar = service.salvar(paciente);
+//    @PutMapping
+//    public ResponseEntity<Paciente> alterar(@ResponseBody Paciente paciente)
+//    {
+//        Paciente editar = service.salvar(paciente);
+//
+//        return  ResponseEntity.status(HttpStatus.OK).body(editar);
+//    }
 
-        return  ResponseEntity.status(HttpStatus.OK).body(editar);
-    }
+//    @PutMapping("/{id}")
+//    public ResponseEntity<PacienteResponse> alterar(@PathVariable Long id, @RequestBody PacienteRequest request) {
+//        Paciente paciente = mapper.toPaciente(request);
+//        Paciente pacienteSalvo = service.alterar(id, paciente);
+//        PacienteResponse pacienteResponse = mapper.toPacienteResponse(pacienteSalvo);
+//        return ResponseEntity.status(HttpStatus.OK).body(pacienteResponse);
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id)
